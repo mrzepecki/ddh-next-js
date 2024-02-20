@@ -19,7 +19,8 @@ const starshipSchema = z.object({
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const body = starshipSchema.safeParse(req.body);
+    const parsedBody = JSON.parse(req.body)
+    const body = starshipSchema.safeParse(parsedBody);
 
     if (!body.success) {
       res.status(400).json({ ...body.error.formErrors });
