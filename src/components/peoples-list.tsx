@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Button,Typography } from '@mui/material';
 
 import { People } from '@/types/people';
 
@@ -10,9 +10,12 @@ const PeoplesList = ({ peoples }: Props): JSX.Element => {
   return (
     <>
       {peoples.map((x) => (
-        <Typography key={x.name} variant="subtitle1">
-          {x.name}
-        </Typography>
+        <Box key={x.name} sx={{display: 'flex', justifyContent: 'space-between'}}>
+          <Typography  variant="subtitle1">
+            {x.name}
+          </Typography>
+          {x.id && <Button variant="text" href={"/peoples/" + x.id}>See details</Button>}
+        </Box>
       ))}
     </>
   );
