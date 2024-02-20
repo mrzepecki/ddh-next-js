@@ -1,19 +1,18 @@
-import { Typography } from '@mui/material';
+import {Box, Button, Typography} from '@mui/material';
 
-import { People } from '@/types/people';
+import {People} from '@/types/people';
+import PeoplesListItem from "@/components/peoples-list-item";
 
 interface Props {
   peoples: People[];
 }
 
-const PeoplesList = ({ peoples }: Props): JSX.Element => {
+const PeoplesList = ({peoples}: Props): JSX.Element => {
   return (
     <>
-      {peoples.map((x) => (
-        <Typography key={x.name} variant="subtitle1">
-          {x.name}
-        </Typography>
-      ))}
+      {peoples.map((x) =>
+        <PeoplesListItem id={x.id} name={x.name}/>
+      )}
     </>
   );
 };

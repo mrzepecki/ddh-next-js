@@ -1,8 +1,8 @@
-import { APIList } from '@/types/api';
-import { List } from '@/types/list';
-import { People, PeopleAPI } from '@/types/people';
+import {APIList} from '@/types/api';
+import {List} from '@/types/list';
+import {People, PeopleAPI} from '@/types/people';
 
-import { fetcher } from '@/utils/fetcher';
+import {fetcher} from '@/utils/fetcher';
 
 const PEOPLE_RESOURCE = 'people';
 
@@ -22,6 +22,12 @@ export class PeopleService {
     return apiURL.href;
   }
 
+  private getPeopleIdFromUrl(url: string) {
+    const peopleIdObj = url.match(/\/(\d+)\/$/)
+
+    return peopleIdObj ? peopleIdObj[0] : null
+  }
+
   async getPage(page: number = 1): Promise<List<People>> {
     const url = this.getURL(page);
 
@@ -36,11 +42,17 @@ export class PeopleService {
         if (!response.results.every((x) => x[field])) throw new Error(`No ${field} field`);
       });
 
+      const perPage = 10
+      const totalPage = Math.ceil(response.count / perPage)
+
       return {
         page: 1,
-        perPage: 10,
-        totalPage: 1,
-        list: response.results.map((x) => ({ name: x.name })),
+        perPage,
+        totalPage,
+        list: response.results.map((x) => ({
+          id: this.getPeopleIdFromUrl(x.url),
+          name: x.name
+        })),
       };
     } catch (e) {
       throw new Error(`Error while fetching ${e}`);
