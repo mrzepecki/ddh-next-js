@@ -1,5 +1,7 @@
-import Layout from '@/components/layout';
 import {useRouter} from "next/router";
+
+import Layout from '@/components/layout';
+import PeoplesSingle from "@/components/peoples-single";
 
 
 export default function PeopleId() {
@@ -8,7 +10,7 @@ export default function PeopleId() {
 
   return (
     <Layout>
-      {personId}
+      <PeoplesSingle id={personId}/>
     </Layout>
   );
 }

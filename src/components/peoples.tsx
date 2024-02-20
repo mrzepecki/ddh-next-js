@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 import { Box, CircularProgress, Divider, Pagination, Stack } from '@mui/material';
 
-import usePeoples from '@/hooks/usePeoples';
+import {usePeoples} from "@/hooks/usePeoples";
 
 import PeoplesList from './peoples-list';
 
