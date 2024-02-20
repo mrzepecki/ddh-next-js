@@ -9,7 +9,7 @@ const PEOPLE_RESOURCE = 'people';
 export class PeopleService {
   private url = process.env.NEXT_PUBLIC_API_URL;
 
-  private getURL(page?: number): string {
+  private getURL(page?: number, search?: string): string {
     if (!this.url) {
       throw new Error('No exist env: NEXT_PUBLIC_API_URL');
     }
@@ -17,6 +17,10 @@ export class PeopleService {
 
     if (page) {
       apiURL.searchParams.append('page', page.toString());
+    }
+
+    if (search) {
+      apiURL.searchParams.append('search', search.toString());
     }
 
     return apiURL.href;
@@ -72,6 +76,20 @@ export class PeopleService {
       });
 
       return response;
+    } catch (e) {
+      throw new Error(`Error while fetching ${e}`);
+    }
+  }
+
+  async searchPeople(input: string): Promise<PeopleAPI[]> {
+    const url = this.getURL(undefined, input)
+
+    try {
+      const response = await fetcher<APIList<PeopleAPI>>(url)
+
+      if (!response.results) throw new Error('No data');
+
+      return response.results;
     } catch (e) {
       throw new Error(`Error while fetching ${e}`);
     }
