@@ -34,7 +34,7 @@ export class PeopleService {
     try {
       const response = await fetcher<APIList<PeopleAPI>>(url);
 
-      const requiredFields: Partial<keyof People>[] = ['name'];
+      const requiredFields: Partial<keyof PeopleAPI>[] = ['name'];
 
       if (!response.results) throw new Error('No data');
 
@@ -54,6 +54,24 @@ export class PeopleService {
           name: x.name
         })),
       };
+    } catch (e) {
+      throw new Error(`Error while fetching ${e}`);
+    }
+  }
+
+  async getPeople(id: string | string[] | undefined): Promise<PeopleAPI> {
+    const url = this.getURL() + '/' + id;
+
+    try {
+      const response = await fetcher<PeopleAPI>(url);
+
+      const requiredFields: Partial<keyof PeopleAPI>[] = ['name'];
+
+      requiredFields.forEach((field) => {
+        if (!response[field]) throw new Error(`No ${field} field`);
+      });
+
+      return response;
     } catch (e) {
       throw new Error(`Error while fetching ${e}`);
     }

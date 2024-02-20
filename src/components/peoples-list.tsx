@@ -1,6 +1,5 @@
-import {Box, Button, Typography} from '@mui/material';
-
 import {People} from '@/types/people';
+
 import PeoplesListItem from "@/components/peoples-list-item";
 
 interface Props {
@@ -11,7 +10,7 @@ const PeoplesList = ({peoples}: Props): JSX.Element => {
   return (
     <>
       {peoples.map((x) =>
-        <PeoplesListItem id={x.id} name={x.name}/>
+        <PeoplesListItem key={x.id} id={x.id} name={x.name}/>
       )}
     </>
   );
