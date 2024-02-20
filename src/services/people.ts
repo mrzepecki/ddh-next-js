@@ -36,10 +36,13 @@ export class PeopleService {
         if (!response.results.every((x) => x[field])) throw new Error(`No ${field} field`);
       });
 
+      const perPage = 10
+      const totalPage = Math.ceil(response.count / perPage)
+
       return {
         page: 1,
-        perPage: 10,
-        totalPage: 1,
+        perPage,
+        totalPage,
         list: response.results.map((x) => ({ name: x.name })),
       };
     } catch (e) {
