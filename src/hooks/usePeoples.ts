@@ -1,7 +1,7 @@
 import { QueryStatus, useQuery } from '@tanstack/react-query';
 
 import { List } from '@/types/list';
-import { People } from '@/types/people';
+import {People, PeopleAPI} from '@/types/people';
 
 import { PeopleService } from '@/services/people';
 
@@ -10,9 +10,14 @@ interface State {
   peoples: List<People> | undefined;
 }
 
+interface StateSingle {
+  status: QueryStatus,
+  peoples: PeopleAPI | undefined
+}
+
 const PEOPLES_KEY = 'people';
 
-const usePeoples = (page: number): State => {
+export const usePeoples = (page: number): State => {
   const peopleService = new PeopleService();
 
   const { data, status } = useQuery({
@@ -26,4 +31,16 @@ const usePeoples = (page: number): State => {
   };
 };
 
-export default usePeoples;
+export const usePeoplesSingle = (id: string | string[] | undefined): StateSingle => {
+  const peopleService = new PeopleService();
+
+  const { data, status } = useQuery({
+    queryKey: [PEOPLES_KEY, id],
+    queryFn: () => peopleService.getPeople(id),
+  });
+
+  return {
+    status: status,
+    peoples: data,
+  };
+};
